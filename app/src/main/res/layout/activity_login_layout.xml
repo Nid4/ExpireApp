@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/backgroundColor">
+
+    <!-- Logo aplikacji lub tytuł -->
+    <ImageView
+        android:minHeight="24dp"
+        android:minWidth="24dp"
+        android:maxHeight="48dp"
+        android:maxWidth="48dp"
+
+        android:id="@+id/app_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/baseline_ballot_24"
+        android:contentDescription="@string/app_logo_desc"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Pole do wprowadzenia loginu -->
+    <EditText
+        tools:text="User name"
+        android:textColor="@color/black"
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_username"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:background="@color/edittext_background" />
+
+    <!-- Pole do wprowadzenia hasła -->
+    <EditText
+        tools:text="mypassword"
+        android:textColor="@color/black"
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:background="@color/edittext_background" />
+
+    <!-- Przycisk logowania -->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_button"
+        android:backgroundTint="@color/buttonColor"
+        android:textColor="@color/white"
+        android:padding="12dp" />
+
+    <!-- Opcjonalny tekst nawigacyjny -->
+    <TextView
+        android:id="@+id/textView_create_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dont_have_account"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp" />
+
+
+    <TextView
+        android:id="@+id/tv_forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_password"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
