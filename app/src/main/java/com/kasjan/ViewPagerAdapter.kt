@@ -13,10 +13,10 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
 
     override fun createFragment(position: Int): Fragment {
         val fragment = when (position) {
-            1 -> DayFragment()
-            2 -> ListDaysFragment()
-            3 -> SettingsFragment()
-            else -> DayFragment()
+            0 -> DayFragment()
+            1 -> ListDaysFragment()
+            2 -> SettingsFragment()
+            else -> SettingsFragment()
         }
         fragments[position] = fragment
         return fragment

@@ -52,4 +52,7 @@
     <string name="add_product">Add new product\n</string>
     <string name="reset_button">Reset password\n</string>
     <string name="create_acc_button">Create Account</string>
+    <string name="tab_day">Day</string>
+    <string name="tab_list">Days List</string>
+    <string name="tab_settings">Settings</string>
 </resources>
