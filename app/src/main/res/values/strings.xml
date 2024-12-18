@@ -50,4 +50,6 @@
     <string name="dont_have_account">"Create account now"</string>
     <string name="forgot_password">Reset Password\n</string>
     <string name="add_product">Add new product\n</string>
+    <string name="reset_button">Reset password\n</string>
+    <string name="create_acc_button">Create Account</string>
 </resources>

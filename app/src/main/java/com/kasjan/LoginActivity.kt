@@ -12,10 +12,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Inicjalizacja View Binding
         binding = ActivityLoginLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         // Sprawdzanie, czy użytkownik jest już zalogowany
         val isLoggedIn = checkIfUserLoggedIn()
@@ -25,29 +24,11 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // Obsługa kliknięcia przycisku logowania
-        binding.btnLogin.setOnClickListener {
-            val username = binding.etUsername.text.toString()
-            val password = binding.etPassword.text.toString()
-
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Wprowadź login i hasło", Toast.LENGTH_SHORT).show()
-            } else {
-                if (validateCredentials(username, password)) {
-                    saveLoginState()
-                    navigateToMainActivity()
-                } else {
-                    Toast.makeText(this, "Nieprawidłowe dane logowania", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        // Obsługa kliknięcia "Zapomniałeś hasła?"
-        binding.tvForgotPassword.setOnClickListener {
-            Toast.makeText(this, "Opcja odzyskiwania hasła w przygotowaniu", Toast.LENGTH_SHORT)
-                .show()
-        }
+        loginButton()
+        createAccountButton()
+        resetButton()
     }
+
 
     private fun checkIfUserLoggedIn(): Boolean {
         // Tymczasowe sprawdzanie stanu logowania (np. poprzez SharedPreferences)
@@ -75,4 +56,39 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    private fun resetButton() {
+        binding.tvForgotPassword.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun loginButton() {
+        binding.btnLogin.setOnClickListener {
+            val username = binding.etUsername.text.toString()
+            val password = binding.etPassword.text.toString()
+
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Wprowadź login i hasło", Toast.LENGTH_SHORT).show()
+            } else {
+                if (validateCredentials(username, password)) {
+                    saveLoginState()
+                    navigateToMainActivity()
+                } else {
+                    Toast.makeText(this, "Nieprawidłowe dane logowania", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun createAccountButton() {
+       binding.textViewCreateAccount.setOnClickListener {
+           val intent = Intent(this, CreateAccountActivity::class.java)
+           startActivity(intent)
+           finish()
+       }
+    }
+
 }

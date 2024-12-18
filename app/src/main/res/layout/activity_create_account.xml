@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Logo aplikacji lub tytuł -->
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/app_logo_desc"
+        android:maxWidth="48dp"
+        android:maxHeight="48dp"
+        android:minWidth="24dp"
+        android:minHeight="24dp"
+        android:src="@drawable/baseline_ballot_24"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_information"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/text_view_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Please type Your email adress and Pasword"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/et_username"
+        app:layout_constraintTop_toBottomOf="@+id/app_logo"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <!-- Pole do wprowadzenia loginu -->
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@color/edittext_background"
+        android:hint="@string/hint_username"
+        android:inputType="text"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_information"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="Email" />
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@color/edittext_background"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/checkbox_regulamin"
+        app:layout_constraintTop_toBottomOf="@+id/et_username"
+        tools:ignore="TextFields"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="Password" />
+
+    <CheckBox
+        android:layout_marginStart="8dp"
+        android:id="@+id/checkbox_regulamin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+
+    <TextView
+        android:id="@+id/text_view_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I accept the"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/checkbox_regulamin"
+        app:layout_constraintStart_toEndOf="@id/checkbox_regulamin"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_password"
+        app:layout_constraintTop_toTopOf="@id/checkbox_regulamin" />
+
+    <TextView
+        android:layout_marginStart="8dp"
+        android:id="@+id/text_view_regulamin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Regulamin"
+        android:textColor="#FF9800"
+        app:layout_constraintBottom_toBottomOf="@id/checkbox_regulamin"
+        app:layout_constraintStart_toEndOf="@id/text_view_accept"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_password"
+        app:layout_constraintTop_toTopOf="@id/checkbox_regulamin" />
+
+    <!-- Przycisk logowania -->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="@color/buttonColor"
+        android:padding="10dp"
+        android:text="@string/create_acc_button"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_regulamin"
+        tools:layout_editor_absoluteX="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ExpiereApp">
+
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -25,6 +26,16 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:parentActivityName=".LoginActivity"
+            android:name=".ResetPasswordActivity"
+            android:theme="@style/Theme.ExpiereApp">
+        </activity>
+        <activity
+            android:parentActivityName=".LoginActivity"
+            android:name=".CreateAccountActivity"
+            android:theme="@style/Theme.ExpiereApp">
         </activity>
     </application>
 

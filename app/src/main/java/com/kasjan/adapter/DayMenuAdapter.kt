@@ -13,7 +13,7 @@ import java.util.*
 class DayMenuAdapter(
     private val days: List<Date>,
     private val onDaySelected: (Int) -> Unit,
-    private var selectedDayIndex: Int
+    var selectedDayIndex: Int
 ) : RecyclerView.Adapter<DayMenuAdapter.DayViewHolder>() {
 
     class DayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

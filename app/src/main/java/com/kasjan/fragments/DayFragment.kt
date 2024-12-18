@@ -1,4 +1,4 @@
-package com.kasjan
+package com.kasjan.fragments
 import ProductAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kasjan.R
 import com.kasjan.model.Product
 
 class DayFragment : Fragment() {
@@ -33,7 +34,10 @@ class DayFragment : Fragment() {
         val productList = listOf(
             Product("Mleko", "Nabiał", 10, "2024-12-31"),
             Product("Chleb", "Pieczywo", 5, "2024-12-15"),
-            Product("Masło", "Nabiał", 2, "2024-12-20")
+            Product("Masło", "Nabiał", 2, "2024-12-20"),
+            Product("Bułki", "Pieczywo", 12, "2024-12-22"),
+            Product("Pepsi", "Napoje", 12, "2024-12-22"),
+            Product("CocaCola", "Napoje", 12, "2024-12-22"),
         )
 
         recyclerView.adapter = ProductAdapter(productList)
