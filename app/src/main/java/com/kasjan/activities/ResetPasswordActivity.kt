@@ -1,4 +1,4 @@
-package com.kasjan
+package com.kasjan.activities
 
 import android.os.Bundle
 import android.widget.Toast

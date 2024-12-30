@@ -1,11 +1,9 @@
-package com.kasjan
+package com.kasjan.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kasjan.databinding.ActivityCreateAccountBinding
-import com.kasjan.databinding.ActivityResetPasswordLayoutBinding
 
 class CreateAccountActivity:AppCompatActivity() {
 
