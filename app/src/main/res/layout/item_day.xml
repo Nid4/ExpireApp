@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="16dp"
+    android:background="@color/buttonColor"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_margin="8dp"
+    >
 
     <TextView
-        android:id="@+id/tv_day"
+        android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dzień"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/gray" />
+        android:textSize="18sp"
+        tools:text="Dzien 1"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <TextView
+        tools:text="Test"
+        android:id="@+id/textViewDayName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:paddingTop="4dp" />
 </LinearLayout>

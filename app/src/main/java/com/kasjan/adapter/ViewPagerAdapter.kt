@@ -1,9 +1,9 @@
-package com.kasjan
+package com.kasjan.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.kasjan.fragments.DayFragment
-import com.kasjan.fragments.ListDaysFragment
+import com.kasjan.fragments.DaysListFragment
 import com.kasjan.fragments.SettingsFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
@@ -14,7 +14,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
     override fun createFragment(position: Int): Fragment {
         val fragment = when (position) {
             0 -> DayFragment()
-            1 -> ListDaysFragment()
+            1 -> DaysListFragment()
             2 -> SettingsFragment()
             else -> SettingsFragment()
         }

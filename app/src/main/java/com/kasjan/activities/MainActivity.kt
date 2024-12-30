@@ -1,8 +1,10 @@
-package com.kasjan
+package com.kasjan.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import com.kasjan.R
+import com.kasjan.adapter.ViewPagerAdapter
 import com.kasjan.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

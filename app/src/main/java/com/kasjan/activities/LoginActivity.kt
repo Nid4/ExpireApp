@@ -1,4 +1,4 @@
-package com.kasjan
+package com.kasjan.activities
 
 import android.content.Intent
 import android.os.Bundle
