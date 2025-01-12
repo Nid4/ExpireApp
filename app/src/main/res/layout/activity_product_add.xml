@@ -1,0 +1,64 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewAddProductDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Product:"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextEAN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Product EAN"/>
+
+    <EditText
+        android:id="@+id/editTextProductName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Product Name" />
+
+    <EditText
+        android:id="@+id/editTextProductCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Category (Optional)" />
+
+    <EditText
+        android:id="@+id/editTextProductQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Quantity" />
+    <EditText
+        android:id="@+id/editTextProductExpiryDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:hint="Expiry Date" />
+
+
+    <Button
+        android:id="@+id/buttonSaveProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Product"
+        android:layout_marginTop="16dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonScanEan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:text="Scan EAN/Barcode" />
+
+
+
+
+</LinearLayout>

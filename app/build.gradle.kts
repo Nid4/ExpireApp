@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
 }
 
 android {
@@ -32,6 +34,8 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+
+
     }
     buildFeatures {
         viewBinding = true
@@ -39,8 +43,28 @@ android {
 }
 
 dependencies {
+    // Room runtime
+    implementation (libs.androidx.room.runtime)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.lifecycle)
+    // Kompilator Room z KSP
+    ksp (libs.androidx.room.compiler)
+    // Opcjonalne: Room KTX
+    implementation (libs.androidx.room.ktx)
 
+    //Camera
+    implementation (libs.barcode.scanning)
+    implementation ("androidx.camera:camera-camera2:1.0.0")
+    implementation ("androidx.camera:camera-lifecycle:1.0.0")
+    implementation ("androidx.camera:camera-view:1.0.0") // Jeśli chcesz używać CameraX PreviewView
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1") // Dla LifecycleOwner
+
+
+
+    implementation(libs.play.services.analytics.impl)
+    implementation(libs.androidx.room.common)
     implementation(libs.androidx.core.ktx)
+
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
