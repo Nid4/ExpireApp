@@ -1,4 +1,6 @@
 package com.kasjan.fragments
+
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +10,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kasjan.R
 import com.kasjan.adapter.DaysAdapter
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DaysListFragment : Fragment() {
+
+    private var daySelectionListener: DaySelectionListener? = null
+
+    interface DaySelectionListener {
+        fun onDaySelected(date: Date)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DaySelectionListener) {
+            daySelectionListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        daySelectionListener = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +52,7 @@ class DaysListFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = DaysAdapter(days) { selectedDate ->
-            onDayClicked(selectedDate)
+            daySelectionListener?.onDaySelected(selectedDate) // Wywołaj listener
         }
 
         // Przewiń listę, aby dzisiejszy dzień był widoczny na starcie
@@ -44,14 +63,4 @@ class DaysListFragment : Fragment() {
 
         return view
     }
-
-    private fun onDayClicked(date: Date) {
-        // Obsłuż kliknięcie na dzień (np. przejście do innego fragmentu)
-        val format = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        val formattedDate = format.format(date)
-        println("Clicked on: $formattedDate") // Debugging
-
-    }
-
-
 }
