@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("kotlin-kapt")
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -47,6 +50,7 @@ dependencies {
     implementation (libs.androidx.room.runtime)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.firebase.database.ktx)
     // Kompilator Room z KSP
     ksp (libs.androidx.room.compiler)
     // Opcjonalne: Room KTX
@@ -59,7 +63,14 @@ dependencies {
     implementation ("androidx.camera:camera-view:1.0.0") // Jeśli chcesz używać CameraX PreviewView
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1") // Dla LifecycleOwner
 
+// Import the Firebase BoM
 
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+
+    implementation ("androidx.work:work-runtime-ktx:2.10.0")
 
     implementation(libs.play.services.analytics.impl)
     implementation(libs.androidx.room.common)

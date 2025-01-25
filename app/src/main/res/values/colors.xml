@@ -6,4 +6,5 @@
     <color name="edittext_background">#E0F2F1</color>
     <color name="buttonColor">#004D40</color>
     <color name="gray">#868686</color>
+    <color name="lightRed">#F44336</color>
 </resources>
