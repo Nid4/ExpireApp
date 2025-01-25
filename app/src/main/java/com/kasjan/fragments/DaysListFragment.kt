@@ -60,7 +60,6 @@ class DaysListFragment : Fragment() {
         recyclerView.post {
             layoutManager.scrollToPositionWithOffset(todayIndex, 0) // Scroll na dzisiejszy dzień
         }
-
         return view
     }
 }

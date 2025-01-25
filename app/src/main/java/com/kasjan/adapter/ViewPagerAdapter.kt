@@ -1,5 +1,6 @@
 package com.kasjan.adapter
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -7,24 +8,19 @@ import com.kasjan.fragments.DayFragment
 import com.kasjan.fragments.DaysListFragment
 import com.kasjan.fragments.SettingsFragment
 
-class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    private val fragments = arrayOfNulls<Fragment>(itemCount)
+class ViewPagerAdapter(
+    activity: AppCompatActivity,
+    private val fragments: List<Fragment>
+) : FragmentStateAdapter(activity) {
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = fragments.size
 
-    override fun createFragment(position: Int): Fragment {
-        val fragment = when (position) {
-            0 -> DayFragment()
-            1 -> DaysListFragment()
-            2 -> SettingsFragment()
-            else -> SettingsFragment()
-        }
-        fragments[position] = fragment
-        return fragment
-    }
+    override fun createFragment(position: Int): Fragment = fragments[position]
+}
+
 
 //    fun getFragment(position: Int): Fragment? {
 //        return fragments[position]
 //    }
-}
+
 

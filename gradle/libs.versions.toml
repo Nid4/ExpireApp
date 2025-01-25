@@ -1,22 +1,23 @@
 [versions]
-agp = "8.7.3"
+agp = "8.8.0"
 barcodeScanning = "17.3.0"
-kotlin = "1.9.24"
+kotlin = "2.1.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-appcompat = "1.6.1"
-material = "1.10.0"
-constraintlayout = "2.1.4"
-navigationFragmentKtx = "2.8.4"
-navigationUiKtx = "2.8.4"
+appcompat = "1.7.0"
+material = "1.12.0"
+constraintlayout = "2.2.0"
+navigationFragmentKtx = "2.8.5"
+navigationUiKtx = "2.8.5"
 
 roomRuntime = "2.6.1"
 roomCommon = "2.6.1"
 playServicesAnalyticsImpl = "18.2.0"
 cameraCore = "1.4.1"
 cameraLifecycle = "1.4.1"
+firebaseDatabaseKtx = "21.0.0"
 
 
 [libraries]
@@ -37,6 +38,7 @@ androidx-room-common = { group = "androidx.room", name = "room-common", version.
 play-services-analytics-impl = { group = "com.google.android.gms", name = "play-services-analytics-impl", version.ref = "playServicesAnalyticsImpl" }
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
