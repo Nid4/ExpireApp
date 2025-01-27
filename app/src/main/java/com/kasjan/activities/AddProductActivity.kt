@@ -103,8 +103,10 @@ class AddProductActivity : AppCompatActivity() {
                 this.selectedYear = selectedYear
                 this.selectedMonth = selectedMonth + 1 // Months are 0-indexed
                 this.selectedDay = selectedDay
+
+                var monthRepair = selectedMonth + 1 //months are 0-indexed, so we need add 1
                 // Update TextView
-                binding.editTextProductExpiryDate.setText("$selectedDay/$selectedMonth/$selectedYear")
+                binding.editTextProductExpiryDate.setText("$selectedDay/$monthRepair/$selectedYear")
             },
             year, month, day
         )

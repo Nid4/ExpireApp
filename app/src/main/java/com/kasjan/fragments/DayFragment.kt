@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.kasjan.R
 import com.kasjan.activities.AddProductActivity
 import com.kasjan.adapter.ProductsAdapter
 import com.kasjan.model.AppDatabase
+import com.kasjan.model.SharedViewModel
 import com.kasjan.model.ShopProduct
 import com.kasjan.utils.FirebaseHelper
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +33,7 @@ class DayFragment : Fragment() {
     private lateinit var textViewDate: TextView
     private lateinit var faButton: FloatingActionButton
     private lateinit var adapter: ProductsAdapter
-    private var currentSelectedDate: Date? = null
+    lateinit var viewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +48,12 @@ class DayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Inicjalizacja ViewModel
+        viewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+
         setupFabListener()
+
         // Inicjalizacja RecyclerView i adaptera
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = ProductsAdapter(mutableListOf()) { deletedProduct ->
@@ -59,24 +66,25 @@ class DayFragment : Fragment() {
         }
         recyclerView.adapter = adapter
 
+        // Obserwowanie zmiany daty w ViewModel
+        viewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            updateDate(date)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        val newDate = arguments?.getLong(ARG_DATE)?.let { Date(it) } ?: Date()
-        if (currentSelectedDate == null || currentSelectedDate != newDate) {
-            currentSelectedDate = newDate
-            updateDate(newDate)
-        }
-
+        // Wymuszenie odświeżenia listy przy powrocie z AddActivity
+        viewModel.selectedDate.value?.let { updateDate(it) }
     }
 
-
     fun updateDate(date: Date) {
+        // Ustaw tekst daty
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         textViewDate.text = dateFormat.format(date)
         Log.d("DayFragment", "Updating date to: ${dateFormat.format(date)}")
 
+        // Pobierz produkty dla wybranej daty
         lifecycleScope.launch(Dispatchers.IO) {
             val products = getProductsForDate(date)
             withContext(Dispatchers.Main) {
@@ -98,10 +106,9 @@ class DayFragment : Fragment() {
         val localProducts = db.productDao().getProductsByDate(day, month, year)
 
         if (localProducts.isNotEmpty()) {
-            // Zwróć dane lokalne, jeśli są dostępne
             return localProducts
         } else {
-            // Opcjonalne: spróbuj zsynchronizować z Firebase tylko w razie potrzeby
+            // Opcjonalne: pobierz dane z Firebase, jeśli lokalne dane są niedostępne
             val firebaseProducts = fetchProductsFromFirebase(day, month, year)
             saveProductsToLocalDatabase(firebaseProducts)
             return firebaseProducts
@@ -110,14 +117,14 @@ class DayFragment : Fragment() {
 
     private suspend fun fetchProductsFromFirebase(day: Int, month: Int, year: Int): List<ShopProduct> {
         // Implementacja zależna od Firebase SDK
-        // Pobierz dane z Firebase i skonwertuj na List<ShopProduct>
         return emptyList() // Zastąp właściwą implementacją
     }
 
     private suspend fun saveProductsToLocalDatabase(products: List<ShopProduct>) {
         val db = AppDatabase.getDatabase(requireContext())
-        db.productDao().insertAll(products) // insertProducts: @Insert(onConflict = REPLACE)
+        db.productDao().insertAll(products)
     }
+
     private fun setupFabListener() {
         faButton.setOnClickListener {
             val intent = Intent(requireContext(), AddProductActivity::class.java)
@@ -143,14 +150,10 @@ class DayFragment : Fragment() {
             }
         }
     }
+
     companion object {
-        private const val ARG_DATE = "arg_date"
-        fun newInstance(date: Date?): DayFragment {
-            val fragment = DayFragment()
-            val args = Bundle()
-            date?.let { args.putLong(ARG_DATE, it.time) }
-            fragment.arguments = args
-            return fragment
+        fun newInstance(): DayFragment {
+            return DayFragment()
         }
     }
 }

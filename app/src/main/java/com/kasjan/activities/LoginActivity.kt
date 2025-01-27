@@ -14,8 +14,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         // Sprawdzanie, czy użytkownik jest już zalogowany
         val isLoggedIn = checkIfUserLoggedIn()
         if (isLoggedIn) {
@@ -28,14 +26,11 @@ class LoginActivity : AppCompatActivity() {
         createAccountButton()
         resetButton()
     }
-
-
     private fun checkIfUserLoggedIn(): Boolean {
         // Tymczasowe sprawdzanie stanu logowania (np. poprzez SharedPreferences)
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         return sharedPreferences.getBoolean("is_logged_in", false)
     }
-
     private fun saveLoginState() {
         // Zapisywanie stanu logowania (np. do SharedPreferences)
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
@@ -44,7 +39,6 @@ class LoginActivity : AppCompatActivity() {
             apply()
         }
     }
-
     private fun validateCredentials(username: String, password: String): Boolean {
         // Prosta weryfikacja (można zastąpić prawdziwą weryfikacją z serwera lub bazy danych)
         return username == "admin" && password == "admin123"
