@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
+
 class DayFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -84,15 +86,36 @@ class DayFragment : Fragment() {
     private suspend fun getProductsForDate(date: Date): List<ShopProduct> {
         val calendar = Calendar.getInstance()
         calendar.time = date
-
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH) + 1
         val year = calendar.get(Calendar.YEAR)
 
         val db = AppDatabase.getDatabase(requireContext())
-        return db.productDao().getProductsByDate(day, month, year)
+
+        // Pobierz dane lokalne
+        val localProducts = db.productDao().getProductsByDate(day, month, year)
+
+        if (localProducts.isNotEmpty()) {
+            // Zwróć dane lokalne, jeśli są dostępne
+            return localProducts
+        } else {
+            // Opcjonalne: spróbuj zsynchronizować z Firebase tylko w razie potrzeby
+            val firebaseProducts = fetchProductsFromFirebase(day, month, year)
+            saveProductsToLocalDatabase(firebaseProducts)
+            return firebaseProducts
+        }
     }
 
+    private suspend fun fetchProductsFromFirebase(day: Int, month: Int, year: Int): List<ShopProduct> {
+        // Implementacja zależna od Firebase SDK
+        // Pobierz dane z Firebase i skonwertuj na List<ShopProduct>
+        return emptyList() // Zastąp właściwą implementacją
+    }
+
+    private suspend fun saveProductsToLocalDatabase(products: List<ShopProduct>) {
+        val db = AppDatabase.getDatabase(requireContext())
+        db.productDao().insertAll(products) // insertProducts: @Insert(onConflict = REPLACE)
+    }
     private fun setupFabListener() {
         faButton.setOnClickListener {
             val intent = Intent(requireContext(), AddProductActivity::class.java)
@@ -102,11 +125,25 @@ class DayFragment : Fragment() {
 
     private fun deleteProduct(product: ShopProduct) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val firebaseHelper = FirebaseHelper()
-            firebaseHelper.deleteProductFromFirebase(product)
-            val db = AppDatabase.getDatabase(requireContext())
-            db.productDao().deleteProduct(product)
+            try {
+                val db = AppDatabase.getDatabase(requireContext())
+                db.productDao().deleteProduct(product)
+                Log.d("DayFragment", "Product deleted locally")
+
+                val firebaseHelper = FirebaseHelper()
+                firebaseHelper.deleteProductFromFirebase(product)
+                Log.d("DayFragment", "Product deleted from Firebase")
+            } catch (e: Exception) {
+                Log.e("DayFragment", "Error deleting product from Firebase or local database", e)
+                withContext(Dispatchers.Main) {
+                    showErrorToast("Failed to delete product. Check your connection.")
+                }
+            }
         }
+    }
+
+    private fun showErrorToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
