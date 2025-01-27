@@ -14,7 +14,7 @@ interface ProductDao {
     fun getProductsByDate(day: Int, month: Int, year: Int): List<ShopProduct>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProduct(product: ShopProduct)
+    suspend fun insertProduct(product: ShopProduct): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(products: List<ShopProduct>)

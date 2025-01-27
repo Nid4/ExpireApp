@@ -46,13 +46,11 @@ class AddProductActivity : AppCompatActivity() {
             val productCategory = binding.editTextProductCategory.text.toString()
             val ean = binding.editTextEAN.text.toString().toIntOrNull() ?: 0
 
-            // Check if required fields are filled
             if (TextUtils.isEmpty(productName) || selectedDay == 0 || selectedMonth == 0 || selectedYear == 0) {
                 Toast.makeText(this, "Name and Expiry Date are required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Create product object
             val product = ShopProduct(
                 ean = ean,
                 name = productName,
@@ -63,15 +61,8 @@ class AddProductActivity : AppCompatActivity() {
                 year = selectedYear
             )
 
-            // Save product to Room and Firebase
             lifecycleScope.launch {
-                val db = AppDatabase.getDatabase(this@AddProductActivity)
-                db.productDao().insertProduct(product)
-
-                val firebaseHelper = FirebaseHelper()
-                firebaseHelper.addProductToFirebase(product)
-
-                // Return to MainActivity and clear activity stack
+                saveProduct(product)
                 val intent = Intent(this@AddProductActivity, MainActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 }
@@ -79,6 +70,17 @@ class AddProductActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+    private suspend fun saveProduct(product: ShopProduct) {
+        val db = AppDatabase.getDatabase(this@AddProductActivity)
+        val firebaseHelper = FirebaseHelper()
+
+        // Zapisz produkt w Room i pobierz wygenerowane ID
+        val productId = db.productDao().insertProduct(product).toInt()
+        val productWithId = product.copy(id = productId) // Utwórz kopię obiektu z przypisanym ID
+
+        // Zapisz produkt w Firebase
+        firebaseHelper.addProductToFirebase(productWithId)
     }
 
     private fun setButtonScaner() {
@@ -101,7 +103,6 @@ class AddProductActivity : AppCompatActivity() {
                 this.selectedYear = selectedYear
                 this.selectedMonth = selectedMonth + 1 // Months are 0-indexed
                 this.selectedDay = selectedDay
-
                 // Update TextView
                 binding.editTextProductExpiryDate.setText("$selectedDay/$selectedMonth/$selectedYear")
             },
