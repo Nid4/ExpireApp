@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "850919328156",
+    "firebase_url": "https://expireapp-42a0a-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "expireapp-42a0a",
+    "storage_bucket": "expireapp-42a0a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850919328156:android:fa9f2bbf6de819f310a059",
+        "android_client_info": {
+          "package_name": "com.kasjan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "850919328156-pd1c2ismc2ruhgslrotjogp60ld9qr28.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvvyrdDKeXrQrQMeg30UcZWvtBOBSAATM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850919328156-pd1c2ismc2ruhgslrotjogp60ld9qr28.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
