@@ -47,7 +47,6 @@ class DayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupFabListener()
-
         // Inicjalizacja RecyclerView i adaptera
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = ProductsAdapter(mutableListOf()) { deletedProduct ->
@@ -59,6 +58,7 @@ class DayFragment : Fragment() {
             }
         }
         recyclerView.adapter = adapter
+
     }
 
     override fun onResume() {
@@ -68,7 +68,9 @@ class DayFragment : Fragment() {
             currentSelectedDate = newDate
             updateDate(newDate)
         }
+
     }
+
 
     fun updateDate(date: Date) {
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -136,16 +138,11 @@ class DayFragment : Fragment() {
             } catch (e: Exception) {
                 Log.e("DayFragment", "Error deleting product from Firebase or local database", e)
                 withContext(Dispatchers.Main) {
-                    showErrorToast("Failed to delete product. Check your connection.")
+                    Toast.makeText(requireContext(), "Failed to delete product. Check your connection.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
-
-    private fun showErrorToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     companion object {
         private const val ARG_DATE = "arg_date"
         fun newInstance(date: Date?): DayFragment {

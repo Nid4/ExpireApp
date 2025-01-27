@@ -17,14 +17,12 @@ class ProductRepository(private val context: Context) {
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val productList = mutableListOf<ShopProduct>()
-
                 for (productSnapshot in snapshot.children) {
                     val product = productSnapshot.getValue(ShopProduct::class.java)
                     if (product != null) {
                         productList.add(product)
                     }
                 }
-
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = AppDatabase.getDatabase(context).productDao()
                     dao.clearAllProducts() // Czyści tabelę
@@ -41,20 +39,17 @@ class ProductRepository(private val context: Context) {
 
     fun syncRoomToFirebase() {
         val dao = AppDatabase.getDatabase(context).productDao()
-
         CoroutineScope(Dispatchers.IO).launch {
             dao.getAllProductsFlow().collect { productList ->
                 val databaseReference = FirebaseDatabase.getInstance().getReference("products")
-
                 databaseReference.get().addOnSuccessListener { snapshot ->
                     val firebaseProducts = snapshot.children.mapNotNull { it.getValue(ShopProduct::class.java) }
-                    val firebaseProductMap = firebaseProducts.associateBy { it.ean }
-
+                    val firebaseProductMap = firebaseProducts.associateBy { it.id }
                     for (product in productList) {
-                        val firebaseProduct = firebaseProductMap[product.ean]
+                        val firebaseProduct = firebaseProductMap[product.id]
                         if (firebaseProduct == null || firebaseProduct != product) {
                             // Zapisz tylko, jeśli produkt się zmienił
-                            databaseReference.child(product.ean.toString()).setValue(product)
+                            databaseReference.child(product.id.toString()).setValue(product)
                         }
                     }
                 }
