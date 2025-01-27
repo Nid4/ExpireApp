@@ -35,6 +35,9 @@ class MainActivity : AppCompatActivity(), DaysListFragment.DaySelectionListener 
 
         // Synchronizacja danych
         syncDataWithFirebaseAndRoom()
+
+        // Dodanie OnPageChangeCallback dla odświeżania fragmentów
+        setupOnPageChangeCallback()
     }
 
     override fun onDaySelected(date: Date) {
@@ -43,13 +46,12 @@ class MainActivity : AppCompatActivity(), DaysListFragment.DaySelectionListener 
         fragment?.updateDate(date) ?: Log.e("MainActivity", "DayFragment not found")
     }
 
-
     private fun configureViewPagerAndTabs() {
         viewPager = binding.viewpagerMain
 
         // Lista fragmentów dla ViewPager
         val fragments = listOf(
-            DayFragment.newInstance(Date()), // Pierwszy fragment dla dzisiejszego dnia
+            DayFragment.newInstance(), // Pierwszy fragment dla dzisiejszego dnia
             DaysListFragment(), // Fragment listy dni
             SettingsFragment() // Fragment ustawień (dodaj SettingsFragment w swoim kodzie)
         )
@@ -68,6 +70,23 @@ class MainActivity : AppCompatActivity(), DaysListFragment.DaySelectionListener 
         }.attach()
     }
 
+    private fun setupOnPageChangeCallback() {
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                // Pobierz fragment widoczny na danej pozycji
+                val fragment = supportFragmentManager.findFragmentByTag("f$position")
+                if (fragment is DayFragment) {
+                    // Odśwież dane, gdy DayFragment jest widoczny
+                    fragment.viewModel.selectedDate.value?.let {
+                        fragment.updateDate(it)
+                    }
+                }
+            }
+        })
+    }
+
     private fun syncDataWithFirebaseAndRoom() {
         val repository = ProductRepository(this)
 
@@ -78,6 +97,7 @@ class MainActivity : AppCompatActivity(), DaysListFragment.DaySelectionListener 
         }
     }
 }
+
 
 
 
