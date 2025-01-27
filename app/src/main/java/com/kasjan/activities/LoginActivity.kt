@@ -4,19 +4,25 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.kasjan.databinding.ActivityLoginLayoutBinding
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginLayoutBinding
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Inicjalizacja FirebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance()
+
         // Sprawdzanie, czy użytkownik jest już zalogowany
-        val isLoggedIn = checkIfUserLoggedIn()
-        if (isLoggedIn) {
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser != null) {
             navigateToMainActivity()
             finish()
             return
@@ -26,63 +32,45 @@ class LoginActivity : AppCompatActivity() {
         createAccountButton()
         resetButton()
     }
-    private fun checkIfUserLoggedIn(): Boolean {
-        // Tymczasowe sprawdzanie stanu logowania (np. poprzez SharedPreferences)
-        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        return sharedPreferences.getBoolean("is_logged_in", false)
-    }
-    private fun saveLoginState() {
-        // Zapisywanie stanu logowania (np. do SharedPreferences)
-        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            putBoolean("is_logged_in", true)
-            apply()
+
+    private fun loginButton() {
+        binding.btnLogin.setOnClickListener {
+            val email = binding.etUsername.text.toString()
+            val password = binding.etPassword.text.toString()
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Wprowadź adres e-mail i hasło", Toast.LENGTH_SHORT).show()
+
+            }
+
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        navigateToMainActivity()
+                    } else {
+                        Toast.makeText(this, "Nieprawidłowe dane logowania", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
     }
-    private fun validateCredentials(username: String, password: String): Boolean {
-        // Prosta weryfikacja (można zastąpić prawdziwą weryfikacją z serwera lub bazy danych)
-        return username == "admin" && password == "admin123"
-    }
 
-    private fun navigateToMainActivity() {
-        // Nawigacja do głównej aktywności
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+    private fun createAccountButton() {
+        binding.textViewCreateAccount.setOnClickListener {
+            val intent = Intent(this, CreateAccountActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun resetButton() {
         binding.tvForgotPassword.setOnClickListener {
             val intent = Intent(this, ResetPasswordActivity::class.java)
             startActivity(intent)
-            finish()
         }
     }
 
-    private fun loginButton() {
-        binding.btnLogin.setOnClickListener {
-            val username = binding.etUsername.text.toString()
-            val password = binding.etPassword.text.toString()
-
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Wprowadź login i hasło", Toast.LENGTH_SHORT).show()
-            } else {
-                if (validateCredentials(username, password)) {
-                    saveLoginState()
-                    navigateToMainActivity()
-                } else {
-                    Toast.makeText(this, "Nieprawidłowe dane logowania", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
-
-    private fun createAccountButton() {
-       binding.textViewCreateAccount.setOnClickListener {
-           val intent = Intent(this, CreateAccountActivity::class.java)
-           startActivity(intent)
-           finish()
-       }
-    }
-
 }

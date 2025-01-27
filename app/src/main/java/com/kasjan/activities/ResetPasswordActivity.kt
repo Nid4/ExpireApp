@@ -3,32 +3,38 @@ package com.kasjan.activities
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.kasjan.databinding.ActivityResetPasswordLayoutBinding
 
 class ResetPasswordActivity:AppCompatActivity() {
 
     private lateinit var binding: ActivityResetPasswordLayoutBinding
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Inicjalizacja View Binding
         binding = ActivityResetPasswordLayoutBinding.inflate(layoutInflater)
+        firebaseAuth = FirebaseAuth.getInstance()
         setContentView(binding.root)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         binding.btnLogin.setOnClickListener {
-            resetUserPassword()
+            var email =  binding.etUsername.text.toString()
+
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Provide E-mail ", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "E-mail to restart password has been sent", Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Failed to send e-mail", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
     }
 
-
-    fun resetUserPassword(){
-        var email =  binding.etUsername.text
-        Toast.makeText(this,"Your $email was send to base, we working on it", Toast.LENGTH_LONG).show()
-
-    }
-
 }
+
