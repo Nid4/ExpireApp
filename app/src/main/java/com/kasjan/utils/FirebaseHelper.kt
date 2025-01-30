@@ -37,17 +37,6 @@ class FirebaseHelper {
                 Log.e("DayFragment", "Failed to delete product from Firebase", exception)
             }
     }
-//fun deleteProductFromFirebase(product: ShopProduct) {
-//    val productKey = product.ean.toString() // Zmień z id na ean
-//    Log.d("FirebaseHelper", "Attempting to delete product with key: $productKey")
-//    databaseReference.child(productKey).removeValue()
-//        .addOnSuccessListener {
-//            Log.d("DayFragment", "Product deleted from Firebase: $productKey")
-//        }
-//        .addOnFailureListener { exception ->
-//            Log.e("DayFragment", "Failed to delete product from Firebase", exception)
-//        }
-//}
 
     // Pobierz produkty z Firebase
     fun getProductsFromFirebase(onSuccess: (List<ShopProduct>) -> Unit, onFailure: (Exception) -> Unit) {

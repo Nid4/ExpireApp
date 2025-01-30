@@ -4,9 +4,11 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import com.kasjan.databinding.ActivityProductAddBinding
 import com.kasjan.model.AppDatabase
 import com.kasjan.model.ShopProduct
@@ -58,7 +60,8 @@ class AddProductActivity : AppCompatActivity() {
                 quantity = productQuantity,
                 day = selectedDay,
                 month = selectedMonth,
-                year = selectedYear
+                year = selectedYear,
+                userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             )
 
             lifecycleScope.launch {
@@ -72,16 +75,24 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
     private suspend fun saveProduct(product: ShopProduct) {
+        val currentUser = FirebaseAuth.getInstance().currentUser
         val db = AppDatabase.getDatabase(this@AddProductActivity)
         val firebaseHelper = FirebaseHelper()
 
-        // Zapisz produkt w Room i pobierz wygenerowane ID
-        val productId = db.productDao().insertProduct(product).toInt()
-        val productWithId = product.copy(id = productId) // Utwórz kopię obiektu z przypisanym ID
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val productWithUser = product.copy( userId = userId)
+            // Zapisz produkt w Room i pobierz wygenerowane ID
+            val productId = db.productDao().insertProduct(productWithUser).toInt()
+            val productWithId = product.copy(id = productId, userId = userId) // Utwórz kopię obiektu z przypisanym ID
 
-        // Zapisz produkt w Firebase
-        firebaseHelper.addProductToFirebase(productWithId)
+            // Zapisz produkt w Firebase
+            firebaseHelper.addProductToFirebase(productWithId)
+        }else{
+            Log.e("SaveProduct", "Something went wrong")
+        }
     }
+
 
     private fun setButtonScaner() {
         binding.buttonScanEan.setOnClickListener {

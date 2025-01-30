@@ -14,9 +14,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.kasjan.R
 import com.kasjan.activities.AddProductActivity
 import com.kasjan.adapter.ProductsAdapter
+import com.kasjan.databinding.FragmentDayBinding
 import com.kasjan.model.AppDatabase
 import com.kasjan.model.SharedViewModel
 import com.kasjan.model.ShopProduct
@@ -29,21 +31,19 @@ import java.util.*
 
 class DayFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var textViewDate: TextView
-    private lateinit var faButton: FloatingActionButton
+    private var _binding: FragmentDayBinding? = null
+    private val binding get() = _binding!! // Binding jest dostępny tylko między onCreateView a onDestroyView
+
     private lateinit var adapter: ProductsAdapter
     lateinit var viewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_day, container, false)
-        recyclerView = view.findViewById(R.id.recyclerViewProducts)
-        textViewDate = view.findViewById(R.id.textViewSelectedDate)
-        faButton = view.findViewById(R.id.fabAddProduct)
-        return view
+    ): View {
+        // Inicjalizacja ViewBinding
+        _binding = FragmentDayBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class DayFragment : Fragment() {
         setupFabListener()
 
         // Inicjalizacja RecyclerView i adaptera
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext())
         adapter = ProductsAdapter(mutableListOf()) { deletedProduct ->
             lifecycleScope.launch(Dispatchers.IO) {
                 deleteProduct(deletedProduct)
@@ -64,7 +64,7 @@ class DayFragment : Fragment() {
                 }
             }
         }
-        recyclerView.adapter = adapter
+        binding.recyclerViewProducts.adapter = adapter
 
         // Obserwowanie zmiany daty w ViewModel
         viewModel.selectedDate.observe(viewLifecycleOwner) { date ->
@@ -81,7 +81,7 @@ class DayFragment : Fragment() {
     fun updateDate(date: Date) {
         // Ustaw tekst daty
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        textViewDate.text = dateFormat.format(date)
+        binding.textViewSelectedDate.text = dateFormat.format(date)
         Log.d("DayFragment", "Updating date to: ${dateFormat.format(date)}")
 
         // Pobierz produkty dla wybranej daty
@@ -99,23 +99,22 @@ class DayFragment : Fragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH) + 1
         val year = calendar.get(Calendar.YEAR)
-
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         val db = AppDatabase.getDatabase(requireContext())
 
         // Pobierz dane lokalne
-        val localProducts = db.productDao().getProductsByDate(day, month, year)
-
+        val localProducts = db.productDao().getProductsByDate(day, month, year, userId)
         if (localProducts.isNotEmpty()) {
             return localProducts
         } else {
             // Opcjonalne: pobierz dane z Firebase, jeśli lokalne dane są niedostępne
-            val firebaseProducts = fetchProductsFromFirebase(day, month, year)
+            val firebaseProducts = fetchProductsFromFirebase(day, month, year, userId)
             saveProductsToLocalDatabase(firebaseProducts)
             return firebaseProducts
         }
     }
 
-    private suspend fun fetchProductsFromFirebase(day: Int, month: Int, year: Int): List<ShopProduct> {
+    private suspend fun fetchProductsFromFirebase(day: Int, month: Int, year: Int, userId: String): List<ShopProduct> {
         // Implementacja zależna od Firebase SDK
         return emptyList() // Zastąp właściwą implementacją
     }
@@ -126,7 +125,7 @@ class DayFragment : Fragment() {
     }
 
     private fun setupFabListener() {
-        faButton.setOnClickListener {
+        binding.fabAddProduct.setOnClickListener {
             val intent = Intent(requireContext(), AddProductActivity::class.java)
             startActivity(intent)
         }
@@ -138,7 +137,6 @@ class DayFragment : Fragment() {
                 val db = AppDatabase.getDatabase(requireContext())
                 db.productDao().deleteProduct(product)
                 Log.d("DayFragment", "Product deleted locally")
-
                 val firebaseHelper = FirebaseHelper()
                 firebaseHelper.deleteProductFromFirebase(product)
                 Log.d("DayFragment", "Product deleted from Firebase")
@@ -151,10 +149,16 @@ class DayFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Unieważnij binding, aby uniknąć wycieków pamięci
+    }
+
     companion object {
         fun newInstance(): DayFragment {
             return DayFragment()
         }
     }
 }
+
 

@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ProductDao {
 
-    @Query("SELECT * FROM products WHERE day = :day AND month = :month AND year = :year")
-    fun getProductsByDate(day: Int, month: Int, year: Int): List<ShopProduct>
+    @Query("SELECT * FROM products WHERE day = :day AND month = :month AND year = :year AND userId = :userId")
+    fun getProductsByDate(day: Int, month: Int, year: Int, userId: String): List<ShopProduct>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(product: ShopProduct): Long
@@ -22,13 +22,10 @@ interface ProductDao {
     @Delete
     suspend fun deleteProduct(product: ShopProduct)
 
-    @Delete
-    suspend fun deleteAll(products: List<ShopProduct>)
+    @Query("DELETE FROM products WHERE userId = :userId")
+    suspend fun clearAllProducts(userId: String)
 
-    @Query("DELETE FROM products")
-    suspend fun clearAllProducts()
-
-    @Query("SELECT * FROM products")
-    fun getAllProductsFlow(): Flow<List<ShopProduct>>
+    @Query("SELECT * FROM products WHERE userId = :userId")
+    fun getAllProductsFlow(userId: String): Flow<List<ShopProduct>>
 
 }

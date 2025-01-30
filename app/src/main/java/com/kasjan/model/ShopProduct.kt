@@ -10,10 +10,11 @@ data class ShopProduct(
     var name: String = "",
     var category: String? = null,
     var quantity: Int? = 0,
-    var day: Int = 1,       // Dzień
-    var month: Int = 1,     // Miesiąc
-    var year: Int = 1970    // Rok
+    var day: Int = 1,
+    var month: Int = 1,
+    var year: Int = 1970,
+    val userId: String = ""
 ) {
-    // Pusty konstruktor wymagany przez Firebase
-    constructor() : this(0, 0, "", null, 0, 1,1,1970)
+    // Empty constructor needed for Firebase
+    constructor() : this(0, 0, "", null, 0, 1,1,1970, "")
 }

@@ -2,6 +2,7 @@ package com.kasjan.model
 
 import android.content.Context
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -25,7 +26,8 @@ class ProductRepository(private val context: Context) {
                 }
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = AppDatabase.getDatabase(context).productDao()
-                    dao.clearAllProducts() // Czyści tabelę
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                    dao.clearAllProducts(userId) // Czyści tabelę
                     dao.insertAll(productList) // Wstaw nowe dane
                 }
             }
@@ -40,7 +42,7 @@ class ProductRepository(private val context: Context) {
     fun syncRoomToFirebase() {
         val dao = AppDatabase.getDatabase(context).productDao()
         CoroutineScope(Dispatchers.IO).launch {
-            dao.getAllProductsFlow().collect { productList ->
+            dao.getAllProductsFlow(userId = FirebaseAuth.getInstance().currentUser?.uid.toString()).collect { productList ->
                 val databaseReference = FirebaseDatabase.getInstance().getReference("products")
                 databaseReference.get().addOnSuccessListener { snapshot ->
                     val firebaseProducts = snapshot.children.mapNotNull { it.getValue(ShopProduct::class.java) }
