@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import android.content.Context
 
-@Database(entities = [ShopProduct::class], version = 5, exportSchema = false)
+@Database(entities = [ShopProduct::class], version = 6, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
