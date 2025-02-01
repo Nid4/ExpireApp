@@ -53,12 +53,14 @@ class ProductsAdapter(
         private val textViewProductName: TextView = itemView.findViewById(R.id.tv_product_name)
         private val textViewProductQuantity: TextView = itemView.findViewById(R.id.tv_quantity)
         private val textViewProductCategory: TextView = itemView.findViewById(R.id.tv_category)
+        private val textViewProductEAN: TextView = itemView.findViewById(R.id.tv_ean)
         val deleteButton: ImageButton = itemView.findViewById(R.id.buttonDeleteProduct) // Przenieśliśmy tutaj
 
         fun bind(product: ShopProduct) {
             textViewProductName.text = "Name: ${product.name}"
             textViewProductQuantity.text = "Quantity: ${product.quantity}"
             textViewProductCategory.text = "Category: ${product.category}"
+            textViewProductEAN.text = "EAN: ${product.ean}"
 
             // Tworzymy datę w formacie dd/MM/yyyy z pól day, month, year
             val formattedDate = "${product.day.toString().padStart(2, '0')}/" +

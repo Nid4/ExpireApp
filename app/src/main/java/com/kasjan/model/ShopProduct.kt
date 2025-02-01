@@ -5,8 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "products")
 data class ShopProduct(
-    @PrimaryKey(autoGenerate = true) var id: Int = 0,
-    val ean: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
+    val ean: Long = 0,
     var name: String = "",
     var category: String? = null,
     var quantity: Int? = 0,

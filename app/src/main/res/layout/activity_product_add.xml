@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    >
 
     <TextView
         android:id="@+id/textViewAddProductDate"
@@ -84,14 +85,13 @@
             />
 
         <com.google.android.material.button.MaterialButton
+            app:backgroundTint="#7E57C2"
             android:id="@+id/buttonDatePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Set Date"
-            android:textStyle="italic"
-            app:backgroundTint="@color/buttonColor"
-            />
+            android:textStyle="italic" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

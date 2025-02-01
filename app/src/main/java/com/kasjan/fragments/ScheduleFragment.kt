@@ -12,7 +12,7 @@ import com.kasjan.R
 import com.kasjan.adapter.DaysAdapter
 import java.util.*
 
-class DaysListFragment : Fragment() {
+class ScheduleFragment : Fragment() {
 
     private var daySelectionListener: DaySelectionListener? = null
 

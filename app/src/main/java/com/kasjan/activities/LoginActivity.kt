@@ -38,8 +38,9 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty() || email.isBlank() || password.isBlank()) {
                 Toast.makeText(this, "Wprowadź adres e-mail i hasło", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
 
             }
 

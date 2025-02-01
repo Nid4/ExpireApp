@@ -1,5 +1,6 @@
 package com.kasjan.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,9 +10,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
-
     @Query("SELECT * FROM products WHERE day = :day AND month = :month AND year = :year AND userId = :userId")
-    fun getProductsByDate(day: Int, month: Int, year: Int, userId: String): List<ShopProduct>
+    fun getProductsByDate(day: Int, month: Int, year: Int, userId: String): LiveData<List<ShopProduct>>
+
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(product: ShopProduct): Long

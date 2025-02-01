@@ -2,11 +2,7 @@ package com.kasjan.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.kasjan.fragments.DayFragment
-import com.kasjan.fragments.DaysListFragment
-import com.kasjan.fragments.SettingsFragment
 
 class ViewPagerAdapter(
     activity: AppCompatActivity,

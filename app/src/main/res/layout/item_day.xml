@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/buttonColor"
+    android:padding="9dp"
     android:clickable="true"
     android:focusable="true"
     android:layout_margin="8dp"
     >
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,13 +19,13 @@
         tools:text="Dzien 1"
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
-
     <TextView
-        tools:text="Test"
+        android:layout_gravity="center"
+        tools:text="10"
         android:id="@+id/textViewDayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/gray"
-        android:paddingTop="4dp" />
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:paddingTop="1dp" />
 </LinearLayout>
