@@ -46,7 +46,7 @@ class AddProductActivity : AppCompatActivity() {
             val productName = binding.editTextProductName.text.toString()
             val productQuantity = binding.editTextProductQuantity.text.toString().toIntOrNull() ?: 0
             val productCategory = binding.editTextProductCategory.text.toString()
-            val ean = binding.editTextEAN.text.toString().toIntOrNull() ?: 0
+            val ean = binding.editTextEAN.text.toString().toLongOrNull() ?: 0
 
             if (TextUtils.isEmpty(productName) || selectedDay == 0 || selectedMonth == 0 || selectedYear == 0) {
                 Toast.makeText(this, "Name and Expiry Date are required", Toast.LENGTH_SHORT).show()
